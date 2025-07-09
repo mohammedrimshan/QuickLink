@@ -15,7 +15,7 @@ import { UserModel } from "../models/user.model";
 // Redirect controller
 export const redirect = async (req: Request, res: Response) => {
   const { shortUrl } = req.params;
-  console.log(`Redirect request for: ${shortUrl}, Host: ${req.headers.host}`);
+  console.log(`Redirect request for: ${shortUrl}, Host: ${req.headers.host}, Path: ${req.url}`);
 
   const urlDoc = await URLModel.findOne({ shortUrl });
   if (!urlDoc) {
