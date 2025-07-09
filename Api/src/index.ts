@@ -8,7 +8,8 @@ import { connectDB } from "./config/db";
 import { errorHandler } from "./middlewares/error.middleware";
 import authRoutes from "./routes/auth.route";
 import privateRoutes from "./routes/url.route";
-
+import { redirect } from "./controllers/url.controller";
+import asyncHandler from "express-async-handler";
 dotenv.config();
 
 const app = express();
@@ -35,7 +36,7 @@ app.use((req, res, next) => {
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/pvt", privateRoutes);
-
+app.get("/:shortUrl", asyncHandler(redirect));
 // Health check
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Server is running ✅" });

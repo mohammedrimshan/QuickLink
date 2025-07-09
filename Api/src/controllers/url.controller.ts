@@ -15,11 +15,14 @@ import { UserModel } from "../models/user.model";
 // Redirect controller
 export const redirect = async (req: Request, res: Response) => {
   const { shortUrl } = req.params;
-  console.log(`Redirect request for: ${shortUrl}, Host: ${req.headers.host}, Path: ${req.url}`);
+  console.log(`Redirect request for: ${shortUrl}, Host: ${req.headers.host}, Path: ${req.url}, Query: ${JSON.stringify(req.query)}`);
 
-  const urlDoc = await URLModel.findOne({ shortUrl });
+  const trimmedShortUrl = shortUrl.trim().toLowerCase();
+  const urlDoc = await URLModel.findOne({ shortUrl: trimmedShortUrl });
   if (!urlDoc) {
-    console.error(`URL not found: ${shortUrl}`);
+    console.error(`URL not found: ${trimmedShortUrl}`);
+    const allUrls = await URLModel.find({}).select('shortUrl longUrl fullShortUrl');
+    console.log('All URLs in DB:', JSON.stringify(allUrls, null, 2));
     throw new AppError(ERROR_MESSAGES.URL_NOT_FOUND, StatusCode.NOT_FOUND);
   }
 
@@ -41,11 +44,12 @@ export const redirect = async (req: Request, res: Response) => {
         : req.headers["cf-ipcountry"] || "Unknown",
     });
     await urlDoc.save();
+    console.log(`Click saved for: ${trimmedShortUrl}`);
   } catch (trackingError) {
     console.error("Click tracking error:", trackingError);
   }
 
-  res.redirect(StatusCode.MOVED_TEMPORARILY, redirectUrl); // Use 302
+  res.redirect(StatusCode.MOVED_TEMPORARILY, redirectUrl);
 };
 
 // Create URL controller
@@ -69,7 +73,7 @@ export const createUrl = async (req: Request, res: Response) => {
       }
     }
 
-    const baseUrl = process.env.DOMAIN_URL || "https://api.quicklink.rimshan.in";
+    const baseUrl = process.env.DOMAIN_URL || "https://quicklink.rimshan.in";
     const shortUrl = customUrl || generateShortUrl();
     const fullShortUrl = `${baseUrl}/${shortUrl}`;
 

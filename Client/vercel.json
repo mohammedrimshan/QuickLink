@@ -1,6 +1,19 @@
 {
   "rewrites": [
     { "source": "/assets/(.*)", "destination": "/assets/$1" },
+
+    { "source": "/:shortUrl([a-zA-Z0-9_-]+)", "destination": "https://api.quicklink.rimshan.in/api/pvt/:shortUrl" },
+
+    { "source": "/", "destination": "/" },
+    { "source": "/login", "destination": "/" },
+    { "source": "/register", "destination": "/" },
+
+    { "source": "/profile", "destination": "/" },
+    { "source": "/my-links", "destination": "/" },
+    { "source": "/analytics/:urlId", "destination": "/" },
+    { "source": "/settings", "destination": "/" },
+    { "source": "/help", "destination": "/" },
+
     { "source": "/(.*)", "destination": "/" }
   ]
 }
