@@ -61,17 +61,25 @@ const Login = () => {
         toast.error(response.message || "Login failed");
       }
     } catch (error: any) {
-      // Debug log for the error
       console.error("Login error:", error);
-
-      // Safely extract message string for toast
-      const message =
-        typeof error?.response?.data?.message === "string"
-          ? error.response.data.message
-          : typeof error?.message === "string"
-          ? error.message
-          : "Login failed. Please try again.";
-
+      let message = "Login failed. Please try again.";
+      if (
+        error?.response?.data?.message &&
+        typeof error.response.data.message === "string"
+      ) {
+        message = error.response.data.message;
+      }
+      else if (
+        typeof error?.message === "string" &&
+        !/^\d+$/.test(error.message)
+      ) {
+        message = error.message;
+      }
+      else if (error?.response?.status) {
+        message = `Error: ${error.response.status} ${
+          error.response.statusText || ""
+        }`;
+      }
       toast.error(message);
     } finally {
       setIsLoading(false);
@@ -87,7 +95,9 @@ const Login = () => {
             <div className="bg-gradient-green p-3 rounded-lg group-hover:scale-105 transition-transform">
               <LinkIcon className="h-8 w-8 text-white" />
             </div>
-            <span className="text-3xl font-bold text-gradient-green">QuickLink</span>
+            <span className="text-3xl font-bold text-gradient-green">
+              QuickLink
+            </span>
           </Link>
           <p className="text-muted-foreground mt-2">
             Welcome back! Sign in to your account
@@ -97,13 +107,18 @@ const Login = () => {
         {/* Login Card */}
         <Card className="shadow-xl border-0 bg-card/80 backdrop-blur-sm">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-foreground">Sign In</CardTitle>
+            <CardTitle className="text-2xl font-bold text-foreground">
+              Sign In
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* Email Field */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-medium text-foreground"
+                >
                   Email Address
                 </Label>
                 <div className="relative">
@@ -118,14 +133,19 @@ const Login = () => {
                     }`}
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.email.message}
+                    </p>
                   )}
                 </div>
               </div>
 
               {/* Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="password"
+                  className="text-sm font-medium text-foreground"
+                >
                   Password
                 </Label>
                 <div className="relative">
@@ -152,7 +172,9 @@ const Login = () => {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
 
@@ -191,7 +213,9 @@ const Login = () => {
                   type="button"
                   className="text-sm text-primary hover:text-primary/80 transition-colors"
                   onClick={() =>
-                    toast.warning("Password reset feature will be available soon")
+                    toast.warning(
+                      "Password reset feature will be available soon"
+                    )
                   }
                 >
                   Forgot your password?
