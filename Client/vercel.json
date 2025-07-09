@@ -5,7 +5,7 @@
     { "source": "/:shortUrl([a-zA-Z0-9_-]+)", "destination": "https://api.quicklink.rimshan.in/api/pvt/:shortUrl" },
 
     { "source": "/", "destination": "/" },
-    { "source": "/login", "destination": "/" },
+    { "source": "/login", "destination": "/login" },
     { "source": "/register", "destination": "/" },
 
     { "source": "/profile", "destination": "/" },
