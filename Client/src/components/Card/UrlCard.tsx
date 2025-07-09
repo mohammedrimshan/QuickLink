@@ -17,7 +17,7 @@ const UrlCard = ({
   const handleUrlClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    window.open(url.longUrl, "_blank");
+   window.open(url.fullShortUrl, "_blank");
   };
 
   const handleCardClick = (_e: React.MouseEvent) => {

@@ -15,13 +15,18 @@ import { UserModel } from "../models/user.model";
 // Redirect controller
 export const redirect = async (req: Request, res: Response) => {
   const { shortUrl } = req.params;
+  console.log(`Redirect request for: ${shortUrl}, Host: ${req.headers.host}`);
+
   const urlDoc = await URLModel.findOne({ shortUrl });
   if (!urlDoc) {
+    console.error(`URL not found: ${shortUrl}`);
     throw new AppError(ERROR_MESSAGES.URL_NOT_FOUND, StatusCode.NOT_FOUND);
   }
 
   let redirectUrl = ensureProtocol(urlDoc.longUrl);
+  console.log(`Redirecting to: ${redirectUrl}`);
   if (!isURL(redirectUrl)) {
+    console.error(`Invalid URL: ${redirectUrl}`);
     throw new AppError(ERROR_MESSAGES.INVALID_URL, StatusCode.BAD_REQUEST);
   }
 
@@ -40,7 +45,7 @@ export const redirect = async (req: Request, res: Response) => {
     console.error("Click tracking error:", trackingError);
   }
 
-  res.redirect(StatusCode.NOT_FOUND, redirectUrl); 
+  res.redirect(StatusCode.MOVED_TEMPORARILY, redirectUrl); // Use 302
 };
 
 // Create URL controller

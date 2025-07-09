@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/assets/(.*)", "destination": "/assets/$1" },
+    { "source": "/:shortUrl", "destination": "https://api.quicklink.rimshan.in/api/pvt/:shortUrl" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
