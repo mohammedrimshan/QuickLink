@@ -75,7 +75,7 @@ export const createUrl = async (req: Request, res: Response) => {
 
     const baseUrl = process.env.DOMAIN_URL || "https://quicklink.rimshan.in";
     const shortUrl = customUrl || generateShortUrl();
-    const fullShortUrl = `${baseUrl}/${shortUrl}`;
+    const fullShortUrl = `${baseUrl}/s/${shortUrl}`; 
 
     const url = await URLModel.create({
       longUrl: fullLongUrl,
