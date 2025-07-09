@@ -7,6 +7,10 @@
     {
       "source": "/:shortUrl",
       "destination": "https://api.quicklink.rimshan.in/:shortUrl"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [

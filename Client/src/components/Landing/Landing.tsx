@@ -107,7 +107,7 @@ const LandingPage = () => {
                     className="h-12 text-lg border-border focus:border-primary focus:ring-primary"
                   />
                   <p className="text-sm text-muted-foreground mt-1">
-                    Your URL will be: trimmrr.in/{customUrl || "generated-code"}
+                    Your URL will be: quicklink.rimshan.in/{customUrl || "generated-code"}
                   </p>
                 </div>
                 <Button
