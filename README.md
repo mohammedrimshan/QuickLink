@@ -6,17 +6,17 @@
 
 *Secure • Scalable • Insightful*
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-blue?style=for-the-badge)](https://shortlink.rimshan.site)
-[![API Status](https://img.shields.io/badge/🚀_API-Online-green?style=for-the-badge)](https://shortlink-api.rimshan.site)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-blue?style=for-the-badge)](https://quicklink.rimshan.site)
+[![API Status](https://img.shields.io/badge/🚀_API-Online-green?style=for-the-badge)](https://quicklink-api.rimshan.site)
 [![License](https://img.shields.io/badge/📄_License-MIT-yellow?style=for-the-badge)](#)
 
 </div>
 
----
+---F
 
 ## 🎯 About The Project
 
-**QuickLink** is a full-stack web application that enables users to shorten long URLs and track their analytics in real-time. With secure JWT-based authentication, personalized dashboards, and insightful charts, ShortLink helps users manage and monitor links effortlessly.
+**QuickLink** is a full-stack web application that enables users to shorten long URLs and track their analytics in real-time. With secure JWT-based authentication, personalized dashboards, and insightful charts, QuickLink helps users manage and monitor links effortlessly.
 
 ### 🌟 Key Highlights
 
@@ -188,7 +188,7 @@ Start the frontend development server:
 ## 📁 Project Structure
 
     
-    shortlink/
+    QuickLink/
     ├── 📁 api/                    # Express.js Backend
     │   ├── 📁 src/
     │   │   ├── 📁 controllers/    # Route controllers
