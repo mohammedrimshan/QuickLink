@@ -9,8 +9,12 @@
       "destination": "https://api.quicklink.rimshan.in/:shortUrl"
     },
     {
+      "source": "/assets/(.*)",
+      "destination": "/assets/$1"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ],
   "headers": [
