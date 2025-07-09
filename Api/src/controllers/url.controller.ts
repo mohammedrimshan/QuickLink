@@ -15,48 +15,49 @@ import { UserModel } from "../models/user.model";
 // Redirect controller
 export const redirect = async (req: Request, res: Response) => {
   const { shortUrl } = req.params;
-  console.log(`Redirect request for: ${shortUrl}, Host: ${req.headers.host}, Path: ${req.url}, Query: ${JSON.stringify(req.query)}`);
-
   const trimmedShortUrl = shortUrl.trim().toLowerCase();
-  const urlDoc = await URLModel.findOne({ shortUrl: trimmedShortUrl });
-  if (!urlDoc) {
-    console.error(`URL not found: ${trimmedShortUrl}`);
-    const allUrls = await URLModel.find({}).select('shortUrl longUrl fullShortUrl');
-    console.log('All URLs in DB:', JSON.stringify(allUrls, null, 2));
-    throw new AppError(ERROR_MESSAGES.URL_NOT_FOUND, StatusCode.NOT_FOUND);
-  }
-
-  let redirectUrl = ensureProtocol(urlDoc.longUrl);
-  console.log(`Redirecting to: ${redirectUrl}`);
-  if (!isURL(redirectUrl)) {
-    console.error(`Invalid URL: ${redirectUrl}`);
-    throw new AppError(ERROR_MESSAGES.INVALID_URL, StatusCode.BAD_REQUEST);
-  }
 
   try {
+    const urlDoc = await URLModel.findOne({ shortUrl: trimmedShortUrl });
+    if (!urlDoc) {
+      throw new AppError("URL not found", StatusCode.NOT_FOUND);
+    }
+
+    // Debug: log the cf-ipcountry header
+    console.log("cf-ipcountry header:", req.headers["cf-ipcountry"]);
+
+    let redirectUrl = ensureProtocol(urlDoc.longUrl);
+    if (!isURL(redirectUrl)) {
+      throw new AppError("Invalid URL", StatusCode.BAD_REQUEST);
+    }
+
     urlDoc.clicks.push({
       timestamp: new Date(),
       referrer: req.headers.referer || "Direct",
       userAgent: req.headers["user-agent"] || "",
       ip: req.ip,
-      country: Array.isArray(req.headers["cf-ipcountry"])
-        ? req.headers["cf-ipcountry"][0]
-        : req.headers["cf-ipcountry"] || "Unknown",
+      country:
+        typeof req.headers["cf-ipcountry"] === "string"
+          ? req.headers["cf-ipcountry"]
+          : "Unknown",
     });
-    await urlDoc.save();
-    console.log(`Click saved for: ${trimmedShortUrl}`);
-  } catch (trackingError) {
-    console.error("Click tracking error:", trackingError);
-  }
 
-  res.redirect(StatusCode.MOVED_TEMPORARILY, redirectUrl);
+    await urlDoc.save();
+
+    res.redirect(StatusCode.MOVED_TEMPORARILY, redirectUrl);
+  } catch (error: any) {
+    console.error("Redirect error:", error);
+    res.status(error.statusCode || StatusCode.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message || "Server Error",
+    });
+  }
 };
 
 // Create URL controller
 export const createUrl = async (req: Request, res: Response) => {
   try {
     const { longUrl, customUrl } = req.body;
-    console.log(longUrl, customUrl);
     const userId = (req.user as any)._id;
     const fullLongUrl = ensureProtocol(longUrl);
     if (!isURL(fullLongUrl)) {
