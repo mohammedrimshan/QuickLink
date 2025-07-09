@@ -11,6 +11,7 @@ import {
 } from "../services/url.service";
 import { URLAnalytics } from "../types/url";
 import { UserModel } from "../models/user.model";
+import geoip from "geoip-lite";
 
 // Redirect controller
 export const redirect = async (req: Request, res: Response) => {
@@ -23,23 +24,29 @@ export const redirect = async (req: Request, res: Response) => {
       throw new AppError("URL not found", StatusCode.NOT_FOUND);
     }
 
-    // Debug: log the cf-ipcountry header
-    console.log("cf-ipcountry header:", req.headers["cf-ipcountry"]);
-
     let redirectUrl = ensureProtocol(urlDoc.longUrl);
     if (!isURL(redirectUrl)) {
       throw new AppError("Invalid URL", StatusCode.BAD_REQUEST);
     }
 
+    // Get IP address from headers or socket
+    const ip =
+      (req.headers["x-forwarded-for"] as string)?.split(",")[0].trim() ||
+      req.socket.remoteAddress ||
+      "";
+
+    // Lookup geo info
+    const geo = geoip.lookup(ip);
+    const country = geo?.country || "Unknown";
+
+    console.log(`Redirecting IP: ${ip}, Country: ${country}`);
+
     urlDoc.clicks.push({
       timestamp: new Date(),
       referrer: req.headers.referer || "Direct",
       userAgent: req.headers["user-agent"] || "",
-      ip: req.ip,
-      country:
-        typeof req.headers["cf-ipcountry"] === "string"
-          ? req.headers["cf-ipcountry"]
-          : "Unknown",
+      ip,
+      country,
     });
 
     await urlDoc.save();
