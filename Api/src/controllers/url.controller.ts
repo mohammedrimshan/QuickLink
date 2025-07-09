@@ -69,7 +69,7 @@ export const createUrl = async (req: Request, res: Response) => {
       }
     }
 
-    const baseUrl = process.env.DOMAIN_URL || "https://quicklink.rimshan.in";
+    const baseUrl = process.env.DOMAIN_URL || "https://api.quicklink.rimshan.in";
     const shortUrl = customUrl || generateShortUrl();
     const fullShortUrl = `${baseUrl}/${shortUrl}`;
 
