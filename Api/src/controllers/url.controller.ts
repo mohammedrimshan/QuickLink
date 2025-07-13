@@ -70,7 +70,9 @@ export const createUrl = async (req: Request, res: Response) => {
     }
 
     if (customUrl) {
-      const existingUrl = await URLModel.findOne({ shortUrl: customUrl });
+      const existingUrl = await URLModel.findOne({
+        shortUrl: { $regex: `^${customUrl}$`, $options: "i" },
+      });
       if (existingUrl) {
         throw new AppError(
           ERROR_MESSAGES.SHORT_URL_EXISTS,
@@ -81,7 +83,7 @@ export const createUrl = async (req: Request, res: Response) => {
 
     const baseUrl = process.env.DOMAIN_URL || "https://quicklink.rimshan.in";
     const shortUrl = customUrl || generateShortUrl();
-    const fullShortUrl = `${baseUrl}/s/${shortUrl}`; 
+    const fullShortUrl = `${baseUrl}/s/${shortUrl}`;
 
     const url = await URLModel.create({
       longUrl: fullLongUrl,
@@ -203,7 +205,9 @@ export const getMe = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     if (error instanceof AppError) {
-      res.status(error.statusCode).json({ success: false, message: error.message });
+      res
+        .status(error.statusCode)
+        .json({ success: false, message: error.message });
     } else {
       res
         .status(StatusCode.INTERNAL_SERVER_ERROR)
@@ -211,4 +215,3 @@ export const getMe = async (req: Request, res: Response) => {
     }
   }
 };
-
