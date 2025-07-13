@@ -29,13 +29,11 @@ export const redirect = async (req: Request, res: Response) => {
       throw new AppError("Invalid URL", StatusCode.BAD_REQUEST);
     }
 
-    // Get IP address from headers or socket
     const ip =
       (req.headers["x-forwarded-for"] as string)?.split(",")[0].trim() ||
       req.socket.remoteAddress ||
       "";
 
-    // Lookup geo info
     const geo = geoip.lookup(ip);
     const country = geo?.country || "Unknown";
 
