@@ -15,7 +15,7 @@ import Help from "./Pages/Help";
 import Profile from "./Pages/Profile";
 import MyLinks from "./Pages/MyLinks";
 import Favorites from "./Pages/Favorites";
-import { Settings } from "lucide-react";
+import Settings from "./Pages/Settings";
 
 const queryClient = new QueryClient();
 
