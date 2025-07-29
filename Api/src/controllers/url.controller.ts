@@ -12,6 +12,7 @@ import {
 import { URLAnalytics } from "../types/url";
 import { UserModel } from "../models/user.model";
 import geoip from "geoip-lite";
+import { CustomRequest } from "../middlewares/auth.middleware";
 
 // Redirect controller
 export const redirect = async (req: Request, res: Response) => {
@@ -63,7 +64,8 @@ export const redirect = async (req: Request, res: Response) => {
 export const createUrl = async (req: Request, res: Response) => {
   try {
     const { longUrl, customUrl } = req.body;
-    const userId = (req.user as any)._id;
+    const user = (req as CustomRequest).user;
+    const userId = user.id;
     const fullLongUrl = ensureProtocol(longUrl);
     if (!isURL(fullLongUrl)) {
       throw new AppError(ERROR_MESSAGES.INVALID_URL, StatusCode.BAD_REQUEST);
@@ -115,7 +117,12 @@ export const createUrl = async (req: Request, res: Response) => {
 // Get URLs controller
 export const getUrls = async (req: Request, res: Response) => {
   try {
-    const userId = (req.user as any)._id;
+    const user = (req as CustomRequest).user;
+    const userId = user.id;
+    if (!userId) {
+      console.log("No user ID found in request");
+      throw new AppError(ERROR_MESSAGES.UNAUTHORIZED, StatusCode.UNAUTHORIZED);
+    }
     const urls = await URLModel.find({ userId }).sort({ createdAt: -1 });
 
     res.status(StatusCode.OK).json({
@@ -134,8 +141,8 @@ export const getUrls = async (req: Request, res: Response) => {
 export const getAnalytics = async (req: Request, res: Response) => {
   try {
     const { urlId } = req.params;
-    const userId = (req.user as any)._id;
-
+    const user = (req as CustomRequest).user;
+    const userId = user.id;
     const url = await URLModel.findOne({ _id: urlId, userId });
     if (!url) {
       throw new AppError(ERROR_MESSAGES.URL_NOT_FOUND, StatusCode.NOT_FOUND);
