@@ -1,9 +1,6 @@
-import { IUser, UserDocument } from "../../types/user";
+import { UserDocument } from "../../types/user";
+import { IBaseRepository } from "./base-repository.interface";
 
-export interface IUserRepository {
-  findById(id: string): Promise<UserDocument | null>;
+export interface IUserRepository extends IBaseRepository<UserDocument> {
   findByEmail(email: string): Promise<UserDocument | null>;
-  create(userData: Partial<IUser>): Promise<UserDocument>;
-  update(id: string, userData: Partial<IUser>): Promise<UserDocument | null>;
-  delete(id: string): Promise<void>;
 }
