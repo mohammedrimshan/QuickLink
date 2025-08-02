@@ -8,7 +8,10 @@ import { IUrlController } from "../interfaces/controller-interface/url-controlle
 import { IUrlService } from "../interfaces/services-interface/url-service.interface";
 
 export class UrlController implements IUrlController {
-  constructor(private urlService: IUrlService, private authService: AuthService) {}
+  constructor(
+    private urlService: IUrlService,
+    private authService: AuthService
+  ) {}
 
   async redirect(req: Request, res: Response) {
     try {
@@ -17,7 +20,11 @@ export class UrlController implements IUrlController {
         (req.headers["x-forwarded-for"] as string)?.split(",")[0].trim() ||
         req.socket.remoteAddress ||
         "";
-      const redirectUrl = await this.urlService.redirect(shortUrl, req.headers, ip);
+      const redirectUrl = await this.urlService.redirect(
+        shortUrl,
+        req.headers,
+        ip
+      );
       res.redirect(StatusCode.MOVED_TEMPORARILY, redirectUrl);
     } catch (error: any) {
       console.error("Redirect error:", error);
@@ -40,7 +47,9 @@ export class UrlController implements IUrlController {
       });
     } catch (error: any) {
       if (error instanceof AppError) {
-        res.status(error.statusCode).json({ success: false, message: error.message });
+        res
+          .status(error.statusCode)
+          .json({ success: false, message: error.message });
       } else {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,
@@ -79,7 +88,9 @@ export class UrlController implements IUrlController {
       });
     } catch (error: any) {
       if (error instanceof AppError) {
-        res.status(error.statusCode).json({ success: false, message: error.message });
+        res
+          .status(error.statusCode)
+          .json({ success: false, message: error.message });
       } else {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,
@@ -105,7 +116,9 @@ export class UrlController implements IUrlController {
       });
     } catch (error: any) {
       if (error instanceof AppError) {
-        res.status(error.statusCode).json({ success: false, message: error.message });
+        res
+          .status(error.statusCode)
+          .json({ success: false, message: error.message });
       } else {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,

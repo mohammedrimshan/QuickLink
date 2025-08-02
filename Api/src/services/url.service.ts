@@ -18,7 +18,10 @@ export const generateQRCode = async (url: string): Promise<string | null> => {
   try {
     return await QRCode.toDataURL(url);
   } catch (err) {
-    throw new AppError(ERROR_MESSAGES.QR_CODE_GENERATION_ERROR, StatusCode.INTERNAL_SERVER_ERROR);
+    throw new AppError(
+      ERROR_MESSAGES.QR_CODE_GENERATION_ERROR,
+      StatusCode.INTERNAL_SERVER_ERROR
+    );
   }
 };
 
@@ -63,7 +66,11 @@ export class UrlService implements IUrlService {
     return redirectUrl;
   }
 
-  async createUrl(longUrl: string, userId: string, customUrl?: string): Promise<URLDocument> {
+  async createUrl(
+    longUrl: string,
+    userId: string,
+    customUrl?: string
+  ): Promise<URLDocument> {
     const fullLongUrl = ensureProtocol(longUrl);
     if (!isURL(fullLongUrl)) {
       throw new AppError(ERROR_MESSAGES.INVALID_URL, StatusCode.BAD_REQUEST);
@@ -72,7 +79,10 @@ export class UrlService implements IUrlService {
     if (customUrl) {
       const existingUrl = await this.urlRepository.findByShortUrl(customUrl);
       if (existingUrl) {
-        throw new AppError(ERROR_MESSAGES.SHORT_URL_EXISTS, StatusCode.CONFLICT);
+        throw new AppError(
+          ERROR_MESSAGES.SHORT_URL_EXISTS,
+          StatusCode.CONFLICT
+        );
       }
     }
 
@@ -119,7 +129,8 @@ export class UrlService implements IUrlService {
       const browser = click.userAgent || "Unknown";
       analytics.browsers[browser] = (analytics.browsers[browser] || 0) + 1;
       if (click.country) {
-        analytics.countries[click.country] = (analytics.countries[click.country] || 0) + 1;
+        analytics.countries[click.country] =
+          (analytics.countries[click.country] || 0) + 1;
       }
       const referrer = click.referrer || "Direct";
       analytics.referrers[referrer] = (analytics.referrers[referrer] || 0) + 1;
@@ -130,7 +141,10 @@ export class UrlService implements IUrlService {
 
   async searchUrls(userId: string, query: string): Promise<URLDocument[]> {
     if (!query) {
-      throw new AppError(ERROR_MESSAGES.URL_QUERY_REQUIRED, StatusCode.BAD_REQUEST);
+      throw new AppError(
+        ERROR_MESSAGES.URL_QUERY_REQUIRED,
+        StatusCode.BAD_REQUEST
+      );
     }
     return await this.urlRepository.searchByUserId(userId, query);
   }

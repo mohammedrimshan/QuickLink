@@ -5,7 +5,7 @@ import { AppError } from "../utils/appError";
 import { IAuthController } from "../interfaces/controller-interface/auth-controller.interface";
 import { IAuthService } from "../interfaces/services-interface/auth-service.interface";
 
-export class AuthController  implements IAuthController  {
+export class AuthController implements IAuthController {
   constructor(private authService: IAuthService) {}
 
   async register(req: Request, res: Response) {
@@ -13,12 +13,14 @@ export class AuthController  implements IAuthController  {
       const user = await this.authService.register(req.body, res);
       res.status(StatusCode.CREATED).json({
         success: true,
-        message: "Registration successful. Please verify your email with the OTP sent.",
+        message: SUCCESS_MESSAGES.REGISTRATION_SUCCESS,
         userId: user._id,
       });
     } catch (error: any) {
       if (error instanceof AppError) {
-        res.status(error.statusCode).json({ success: false, message: error.message });
+        res
+          .status(error.statusCode)
+          .json({ success: false, message: error.message });
       } else {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,
@@ -44,7 +46,9 @@ export class AuthController  implements IAuthController  {
       });
     } catch (error: any) {
       if (error instanceof AppError) {
-        res.status(error.statusCode).json({ success: false, message: error.message });
+        res
+          .status(error.statusCode)
+          .json({ success: false, message: error.message });
       } else {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,
@@ -64,7 +68,9 @@ export class AuthController  implements IAuthController  {
       });
     } catch (error: any) {
       if (error instanceof AppError) {
-        res.status(error.statusCode).json({ success: false, message: error.message });
+        res
+          .status(error.statusCode)
+          .json({ success: false, message: error.message });
       } else {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,
@@ -90,7 +96,9 @@ export class AuthController  implements IAuthController  {
       });
     } catch (error: any) {
       if (error instanceof AppError) {
-        res.status(error.statusCode).json({ success: false, message: error.message });
+        res
+          .status(error.statusCode)
+          .json({ success: false, message: error.message });
       } else {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,
@@ -111,7 +119,9 @@ export class AuthController  implements IAuthController  {
       });
     } catch (error: any) {
       if (error instanceof AppError) {
-        res.status(error.statusCode).json({ success: false, message: error.message });
+        res
+          .status(error.statusCode)
+          .json({ success: false, message: error.message });
       } else {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,

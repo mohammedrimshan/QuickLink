@@ -2,7 +2,7 @@ import transporter from "./nodemailer.service";
 
 export const sendOTPEmail = async (email: string, otp: string): Promise<void> => {
   const mailOptions = {
-    from: `"Your App Name" <${process.env.SMTP_USER}>`,
+    from: `"QuickLink" <${process.env.SMTP_USER}>`,
     to: email,
     subject: "Email Verification OTP",
     html: `

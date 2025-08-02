@@ -38,5 +38,6 @@ export const SUCCESS_MESSAGES = {
   URLS_FETCHED: "URLs fetched successfully.",
   URL_CREATED: "Short URL created successfully.",
   ANALYTICS_FETCHED: "Analytics fetched successfully.",
-  SEARCH_SUCCESS:"Search results fetched successfully"
+  SEARCH_SUCCESS:"Search results fetched successfully",
+  REGISTRATION_SUCCESS: "Registration successful. Please verify your email with the OTP sent.",
 };
