@@ -251,6 +251,7 @@ const OTPVerification = ({
                       <SendHorizonal className="h-4 w-4 ml-1" />
                     </button>
                   </TooltipTrigger>
+
                   <TooltipContent
                     className="bg-green-100 text-green-800 border-green-200"
                     side="bottom"

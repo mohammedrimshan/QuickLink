@@ -10,7 +10,7 @@ export const sendOTPEmail = async (email: string, otp: string): Promise<void> =>
         <h2>Email Verification</h2>
         <p>Your OTP for email verification is:</p>
         <h1 style="color: #4CAF50; font-size: 40px; letter-spacing: 2px;">${otp}</h1>
-        <p>This OTP will expire in 60 seconds.</p>
+        <p>This OTP will expire in 10 minutes.</p>
         <p>If you didn't request this verification, please ignore this email.</p>
       </div>
     `,
