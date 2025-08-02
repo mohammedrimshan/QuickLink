@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Profile = () => {
   const { data: user, isLoading, isError } = useGetMe();
+  console.log(user)
 
   if (isLoading) {
     return (

@@ -6,4 +6,11 @@ export const registerUserSchema = userSchema.extend({
     .string()
     .min(6, "Password must be at least 6 characters")
     .max(32, "Password must not exceed 32 characters"),
+    photoBase64: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || val.match(/^data:image\/[a-z]+;base64,/),
+      "Photo must be a valid base64 image string"
+    ),
 });

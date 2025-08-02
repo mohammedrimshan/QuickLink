@@ -49,6 +49,7 @@ export class AuthService implements IAuthService {
           folder: "url-shortener/profiles",
         }
       );
+
       photoUrl = uploadResponse.secure_url;
       photoPublicId = uploadResponse.public_id;
     }
