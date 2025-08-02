@@ -27,4 +27,4 @@ export interface IUrl{
   clicks: Click[];
   createdAt?: Date;
 }
-export interface URLDocument extends Document, IUrl {}
+export interface URLDocument extends Document<Types.ObjectId>, IUrl {}

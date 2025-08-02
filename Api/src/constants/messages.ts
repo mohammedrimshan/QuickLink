@@ -25,6 +25,7 @@ export const ERROR_MESSAGES = {
   URL_NOT_FOUND: "Sorry, this short URL does not exist.",
   SHORT_URL_EXISTS: "Custom short URL already exists.",
   URL_CREATION_FAILED: "Failed to create short URL.",
+  URL_QUERY_REQUIRED:"Search query is required"
 } as const;
 
 export const SUCCESS_MESSAGES = {
@@ -34,7 +35,8 @@ export const SUCCESS_MESSAGES = {
   LOGOUT_SUCCESS: "Logout successful",
   EMAIL_VERIFIED: "Email verified successfully",
   OTP_RESENT: "OTP resent successfully",
-    URLS_FETCHED: "URLs fetched successfully.",
-    URL_CREATED: "Short URL created successfully.",
+  URLS_FETCHED: "URLs fetched successfully.",
+  URL_CREATED: "Short URL created successfully.",
   ANALYTICS_FETCHED: "Analytics fetched successfully.",
+  SEARCH_SUCCESS:"Search results fetched successfully"
 };

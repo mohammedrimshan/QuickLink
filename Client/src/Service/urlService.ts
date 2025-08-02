@@ -22,3 +22,10 @@ export const getMe = async (): Promise<User> => {
   const response = await privateAxiosInstance.get<ApiResponse<User>>('/me');
   return response.data.data;
 };
+
+export const searchUrls = async (query: string): Promise<URLDocument[]> => {
+  const response = await privateAxiosInstance.get<ApiResponse<URLDocument[]>>(
+    `/search?query=${encodeURIComponent(query)}`
+  );
+  return response.data.data;
+};

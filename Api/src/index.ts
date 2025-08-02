@@ -3,13 +3,20 @@ import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-
 import { connectDB } from "./config/db";
 import { errorHandler } from "./middlewares/error.middleware";
 import authRoutes from "./routes/auth.route";
-import privateRoutes from "./routes/url.route";
-import { redirect } from "./controllers/url.controller";
+import urlRoutes from "./routes/url.route";
+import { UserRepository } from "./repository/user.repository";
+import { OtpRepository } from "./repository/otp.repository";
+import { UrlRepository } from "./repository/url.repository";
+import { OtpService } from "./services/otp.generate.service";
+import { AuthService } from "./services/auth.service";
+import { UrlService } from "./services/url.service";
+import { AuthController } from "./controllers/auth.controller";
+import { UrlController } from "./controllers/url.controller";
 import asyncHandler from "express-async-handler";
+
 dotenv.config();
 
 const app = express();
@@ -33,10 +40,25 @@ app.use((req, res, next) => {
   next();
 });
 
+// Instantiate repositories
+const userRepository = new UserRepository();
+const otpRepository = new OtpRepository();
+const urlRepository = new UrlRepository();
+
+// Instantiate services
+const otpService = new OtpService(otpRepository);
+const authService = new AuthService(userRepository, otpRepository, otpService);
+const urlService = new UrlService(urlRepository);
+
+// Instantiate controllers
+const authController = new AuthController(authService);
+const urlController = new UrlController(urlService, authService);
+
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/pvt", privateRoutes);
-app.get("/:shortUrl", asyncHandler(redirect));
+app.use("/api/auth", authRoutes(authController));
+app.use("/api/pvt", urlRoutes(urlController));
+app.get("/s/:shortUrl", asyncHandler(urlController.redirect.bind(urlController)));
+
 // Health check
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Server is running ✅" });

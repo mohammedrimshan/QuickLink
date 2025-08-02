@@ -1,4 +1,4 @@
-import { createUrl, getAnalytics, getUrls } from '@/Service/urlService';
+import { createUrl, getAnalytics, getUrls, searchUrls } from '@/Service/urlService';
 import { useQuery, useMutation, QueryClient } from '@tanstack/react-query';
 
 export const useCreateUrl = () => {
@@ -25,5 +25,15 @@ export const useGetAnalytics = (urlId: string) => {
     queryFn: () => getAnalytics(urlId),
     enabled: !!urlId, 
     staleTime: 5 * 60 * 1000, 
+  });
+};
+
+
+export const useSearchUrls = (query: string) => {
+  return useQuery({
+    queryKey: ['searchUrls', query],
+    queryFn: () => searchUrls(query),
+    enabled: !!query, 
+    staleTime: 2 * 60 * 1000,
   });
 };

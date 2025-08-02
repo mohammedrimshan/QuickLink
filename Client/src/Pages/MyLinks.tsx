@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import { useGetUrls } from "@/hooks/url/useUrl";
+import { useGetUrls,useSearchUrls } from "@/hooks/url/useUrl"; 
 import type { URLDocument } from "@/types/UrlTypes";
 import UrlCard from "@/components/Card/UrlCard";
 import UrlGridCard from "@/components/Card/UrlGridCard";
 import Pagination from "@/components/Pagination/Pagination";
+import SearchBar from "@/components/Search/Search";
 
 type ViewMode = "card" | "grid";
 
@@ -15,18 +16,23 @@ const MyLinks = () => {
   const [urls, setUrls] = useState<URLDocument[]>([]);
   const [viewMode, setViewMode] = useState<ViewMode>("card");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState(""); 
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const { data: fetchedUrls, isLoading: isFetchingUrls } = useGetUrls();
+  const { data: searchedUrls, isLoading: isSearching } = useSearchUrls(searchQuery);
   const navigate = useNavigate();
 
   const itemsPerPage = viewMode === "card" ? 5 : 6;
 
   useEffect(() => {
-    if (fetchedUrls && Array.isArray(fetchedUrls)) {
+    if (searchQuery && searchedUrls && Array.isArray(searchedUrls)) {
+      setUrls(searchedUrls);
+      setCurrentPage(1);
+    } else if (fetchedUrls && Array.isArray(fetchedUrls)) {
       setUrls(fetchedUrls);
       setCurrentPage(1);
     }
-  }, [fetchedUrls]);
+  }, [fetchedUrls, searchedUrls, searchQuery]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -47,6 +53,10 @@ const MyLinks = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
   };
 
   const renderUrls = () => {
@@ -96,39 +106,43 @@ const MyLinks = () => {
     <div className="min-h-screen bg-gradient-green-light flex items-center justify-center p-4">
       <Card className="w-full max-w-6xl shadow-xl border-0 bg-card/80 backdrop-blur-sm">
         <CardHeader>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap gap-4">
             <CardTitle className="text-2xl font-bold text-foreground">
               My Links
             </CardTitle>
-
-            {isLoggedIn && urls.length > 0 && (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={toggleViewMode}
-                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                    viewMode === "card"
-                      ? "bg-green-600 text-white"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
-                >
-                  Card
-                </button>
-                <button
-                  onClick={toggleViewMode}
-                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                    viewMode === "grid"
-                      ? "bg-green-600 text-white"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
-                >
-                  Grid
-                </button>
-              </div>
-            )}
+            <div className="flex items-center gap-4">
+              {isLoggedIn && (
+                <SearchBar onSearch={handleSearch} />
+              )}
+              {isLoggedIn && urls.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={toggleViewMode}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      viewMode === "card"
+                        ? "bg-green-600 text-white"
+                        : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    Card
+                  </button>
+                  <button
+                    onClick={toggleViewMode}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      viewMode === "grid"
+                        ? "bg-green-600 text-white"
+                        : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    Grid
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent>
-          {isFetchingUrls ? (
+          {isFetchingUrls || isSearching ? (
             <p className="text-muted-foreground text-center">Loading...</p>
           ) : isLoggedIn && urls.length > 0 ? (
             <div className="space-y-6">
@@ -146,7 +160,9 @@ const MyLinks = () => {
           ) : (
             <p className="text-center text-lg text-muted-foreground">
               {isLoggedIn
-                ? "No URLs found"
+                ? searchQuery
+                  ? "No URLs found matching your search"
+                  : "No URLs found"
                 : "Please log in to view your shortened links."}
             </p>
           )}

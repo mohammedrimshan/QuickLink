@@ -12,4 +12,5 @@ export interface IUser {
   createdAt?: Date;
   refreshToken?: string;
 }
-export interface UserDocument extends Document, IUser {}
+
+export interface UserDocument extends Document<Types.ObjectId>, IUser {}
