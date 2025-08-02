@@ -4,15 +4,13 @@
 
 ### URL Shortener & Analytics Platform
 
-*Secure • Scalable • Insightful*
+_Secure • Scalable • Insightful_
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-blue?style=for-the-badge)](https://quicklink.rimshan.site)
 [![API Status](https://img.shields.io/badge/🚀_API-Online-green?style=for-the-badge)](https://quicklink-api.rimshan.site)
 [![License](https://img.shields.io/badge/📄_License-MIT-yellow?style=for-the-badge)](#)
 
 </div>
-
-
 
 ## 🎯 About The Project
 
@@ -78,12 +76,14 @@
 <div align="center">
 
 ### Frontend
+
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
 
 ### Backend
+
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
@@ -96,6 +96,7 @@
 <summary><b>📋 Detailed Tech Stack</b></summary>
 
 #### Frontend Technologies
+
 - **Framework:** React 18 with TypeScript
 - **Styling:** TailwindCSS + ShadCN UI + Framer Motion
 - **Forms:** React Hook Form + Zod validation
@@ -105,6 +106,7 @@
 - **Build Tool:** Vite
 
 #### Backend Technologies
+
 - **Runtime:** Node.js
 - **Framework:** Express.js with TypeScript
 - **Database:** MongoDB with Mongoose ODM
@@ -115,6 +117,7 @@
 - **Architecture:** Clean Architecture Pattern
 
 #### DevOps & Deployment
+
 - **Server:** Ubuntu with Nginx + PM2
 - **Process Manager:** PM2
 - **Reverse Proxy:** Nginx
@@ -130,6 +133,7 @@
 ### Prerequisites
 
 Before you begin, ensure you have the following installed:
+
 - **Node.js** v18 or higher
 - **npm** or **yarn**
 - **MongoDB** (local installation or MongoDB Atlas)
@@ -137,16 +141,18 @@ Before you begin, ensure you have the following installed:
 ### 🔧 Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/mohammedrimshan/QuickLink.git
    cd QuickLink
 
+   ```
 
 2. **Backend Setup**
    ```bash
    cd api
    npm install
- 
+   ```
 
 Create **.env** file in the **api** directory:
 
@@ -158,46 +164,45 @@ Create **.env** file in the **api** directory:
        CORS_ALLOWED_ORIGIN=http://localhost:5173
        DOMAIN_URL=http://localhost:5173
 
-
 Start the backend server:
-  
+
       npm run dev
 
 3. **Frontend Setup**
    ```bash
       cd ../client
       npm install
-  
+   ```
 
 Create **.env** file in the **client** tdirectory:
-  
+
      VITE_API_AUTH_URL=http://localhost:5000/api/auth
      VITE_API_PVT_URL=http://localhost:5000/api/pvt
-
 
 Start the frontend development server:
 
     npm run dev
 
 4. **Access the Application**
-   
+
    Open your browser and navigate to: **http://localhost:5173**
 
 ---
 
 ## 📁 Project Structure
 
-    
     QuickLink/
     ├── 📁 api/                    # Express.js Backend
     │   ├── 📁 src/
     │   │   ├── 📁 controllers/    # Route controllers
+    │   │   ├── 📁 repository/     # Database repositories (User, URL, OTP, etc.)
     │   │   ├── 📁 usecases/       # Business logic
     │   │   ├── 📁 services/       # External services
     │   │   ├── 📁 models/         # Database models
     │   │   ├── 📁 routes/         # API routes
     │   │   ├── 📁 middleware/     # Custom middleware
     │   │   └── 📁 utils/          # Utility functions
+            └── 📁 types/          # TypeScript types
     │   ├── 📄 .env.example
     │   └── 📄 package.json
     ├── 📁 client/                 # React Frontend
@@ -218,12 +223,14 @@ Start the frontend development server:
 ## 🧑‍💻 Development Guidelines
 
 ### Code Style
+
 - **ESLint & Prettier** for consistent code formatting
 - **Conventional Commits** for commit messages
 - **TypeScript** for type safety
 - **Clean Architecture** principles
 
 ### Best Practices
+
 - Use **Zod** for client-side validation
 - Follow **RESTful API** conventions
 - Implement proper **error handling**
@@ -247,21 +254,31 @@ We welcome contributions from the community! Here's how you can help:
 
 1. **🍴 Fork the repository**
 2. **🌿 Create a feature branch**
+
    ```bash
    git checkout -b feature/amazing-feature
- 
+
+   ```
+
 3. **💻 Make your changes**
 4. **✅ Commit your changes**
+
    ```bash
    git commit -m "feat: add amazing feature"
 
+   ```
+
 5. **🚀 Push to your branch**
+
    ```bash
    git push origin feature/amazing-feature
- 
+
+   ```
+
 6. **📝 Create a Pull Request**
 
 ### 📋 Contribution Guidelines
+
 - Ensure your code follows the existing style
 - Add tests for new features
 - Update documentation as needed
@@ -303,6 +320,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 **Made with ❤️ by Mohammed Rimshan**
 
-*Secure • Scalable • Insightful*
+_Secure • Scalable • Insightful_
 
 </div>
